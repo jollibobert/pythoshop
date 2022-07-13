@@ -2,9 +2,9 @@ import os
 from PIL import Image
 
 
-def img_to_transparent(img_file):
+def img_to_transparent(img_filepath, output_dir):
 
-	img = Image.open(img_file)
+	img = Image.open(img_filepath)
 	img = img.convert("RGBA")
 	channels = img.getdata()
 	
@@ -20,17 +20,20 @@ def img_to_transparent(img_file):
 			new_channels.append(item)
 
 	img.putdata(new_channels)
-	return img
+	img_file = img_filepath.split('/')[-1].split('.')[0]
+	output_img_filepath = output_dir + img_file + '.png'
+	img.save(output_img_filepath, "PNG")
+	
+	return output_img_filepath
 
 
 def dir_to_transparent(input_dir, output_dir):
 
 	for img_file in os.listdir(input_dir):
-		print(img_file)
 		if ('.png' in img_file) or ('.jpeg' in img_file):
-			img = img_to_transparent(input_dir + img_file)
-			img.save(output_dir + img_file, "PNG")
-
+			img_filepath = input_dir + img_file
+			new_img_filepath = img_to_transparent(img_filepath, output_dir)
+			print("saved new image: {}".format(new_img_filepath))
 	return
 
 
