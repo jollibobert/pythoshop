@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-# add google docstyle
+# add google docstyle documentation
 # add comments
 
 
@@ -46,8 +46,7 @@ def img_bg_to_transparent(img_filepath, output_dir, output_filename=None, rgb_th
 
 def dir_to_transparent(input_dir, output_dir, file_type=None, verbose=True):
 
-	# add parameter file type
-	# add parameter regex string for filename
+	# add parameter regex string for filename using re.search()
 
 	for img_file in os.listdir(input_dir):
 		
