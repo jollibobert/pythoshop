@@ -5,44 +5,66 @@ from PIL import Image
 # add comments
 
 
-def img_to_transparent(img_filepath, output_dir):
-
-	# add parameter threshold
-	# add parameter comparison sign
-	# add parameter output filename
+def img_bg_to_transparent(img_filepath, output_dir, output_filename=None, rgb_threshold=250, compare_sign=">"):
 
 	img = Image.open(img_filepath)
 	img = img.convert("RGBA")
 	channels = img.getdata()
-	
-	rgb_threshold = 250
 
 	new_channels = []
 	for item in channels:
-		if item[0] > rgb_threshold and \
-		   item[1] > rgb_threshold and \
-		   item[2] > rgb_threshold:
-			new_channels.append((255, 255, 255, 0))
+		if compare_sign == ">":
+			if item[0] > rgb_threshold and \
+			   item[1] > rgb_threshold and \
+			   item[2] > rgb_threshold:
+				new_channels.append((255, 255, 255, 0))
+			else:
+				new_channels.append(item)
+		elif compare_sign == "<":
+			if item[0] < rgb_threshold and \
+			   item[1] < rgb_threshold and \
+			   item[2] < rgb_threshold:
+				new_channels.append((255, 255, 255, 0))
+			else:
+				new_channels.append(item)
 		else:
-			new_channels.append(item)
+				print('compare sign is invalid, use ">" or "<"')
+				return
 
 	img.putdata(new_channels)
 	img_file = img_filepath.split('/')[-1].split('.')[0]
-	output_img_filepath = output_dir + img_file + '.png'
+
+	if output_filename is None:
+		output_img_filepath = output_dir + img_file + '.png'
+	else:
+		output_img_filepath = output_dur + output_filename + '.png'
+
 	img.save(output_img_filepath, "PNG")
 	
 	return output_img_filepath
 
 
-def dir_to_transparent(input_dir, output_dir, verbose=True):
+def dir_to_transparent(input_dir, output_dir, file_type=None, verbose=True):
 
 	# add parameter file type
 	# add parameter regex string for filename
 
 	for img_file in os.listdir(input_dir):
-		if ('.png' in img_file) or ('.jpeg' in img_file):
+		
+		flag_process_file = False
+		if file_type is None:
+			if ('.png' in img_file) or ('.jpeg' in img_file):
+				flag_process_file = True
+		elif file_type == 'png':
+			if ('.png' in img_file):
+				flag_process_file = True
+		elif file_type == 'jpeg':
+			if ('.jpeg' in img_file):
+				flag_process_file = True
+
+		if flag_process_file:
 			img_filepath = input_dir + img_file
-			new_img_filepath = img_to_transparent(img_filepath, output_dir)
+			new_img_filepath = img_bg_to_transparent(img_filepath, output_dir)
 			if verbose:
 				print("saved new image: {}".format(new_img_filepath))
 	return
