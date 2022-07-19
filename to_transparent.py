@@ -59,8 +59,10 @@ def dir_to_transparent(input_dir, output_dir, file_type=None, verbose=True):
 
 	# add parameter regex string for filename using re.search()
 
+	# iterate through each file in input directory
 	for img_file in os.listdir(input_dir):
 		
+		# check if file type is valid
 		flag_process_file = False
 		if file_type is None:
 			if ('.png' in img_file) or ('.jpeg' in img_file):
@@ -72,6 +74,7 @@ def dir_to_transparent(input_dir, output_dir, file_type=None, verbose=True):
 			if ('.jpeg' in img_file):
 				flag_process_file = True
 
+		# if file type is valid, process with img_bg_to_transparent
 		if flag_process_file:
 			img_filepath = input_dir + img_file
 			new_img_filepath = img_bg_to_transparent(img_filepath, output_dir)
