@@ -7,10 +7,15 @@ from PIL import Image
 
 def img_bg_to_transparent(img_filepath, output_dir, output_filename=None, rgb_threshold=250, compare_sign=">"):
 
+	# load image
 	img = Image.open(img_filepath)
 	img = img.convert("RGBA")
+
+	# get RGBA channels
 	channels = img.getdata()
 
+	# using chosen comparison sign and RGB threshold,
+	# replace valid pixels alpha channel value to 0
 	new_channels = []
 	for item in channels:
 		if compare_sign == ">":
@@ -31,16 +36,22 @@ def img_bg_to_transparent(img_filepath, output_dir, output_filename=None, rgb_th
 				print('compare sign is invalid, use ">" or "<"')
 				return
 
+	# update RGBA channels
 	img.putdata(new_channels)
+
+	# get image filename from filepath
 	img_file = img_filepath.split('/')[-1].split('.')[0]
 
+	# get output image filepath depending on parameters
 	if output_filename is None:
 		output_img_filepath = output_dir + img_file + '.png'
 	else:
-		output_img_filepath = output_dur + output_filename + '.png'
+		output_img_filepath = output_dir + output_filename + '.png'
 
+	# save output image
 	img.save(output_img_filepath, "PNG")
 	
+	# return output image filepath
 	return output_img_filepath
 
 
