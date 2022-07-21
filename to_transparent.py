@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-# add google docstyle documentation
+# add google style docstrings
 # add comments
 
 
