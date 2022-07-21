@@ -9,9 +9,10 @@ def img_bg_to_transparent(img_filepath, output_dir, output_filename=None, rgb_th
 	'''
 	Load a png or jpeg image given it's filepath and convert background pixels
 	(threshold based, white-ish pixels by default) into transparent pixels.
-	params
+	
+	Args:
 		+
-	returns
+	Returns:
 		+
  	'''
 
