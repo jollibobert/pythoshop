@@ -6,6 +6,14 @@ from PIL import Image
 
 
 def img_bg_to_transparent(img_filepath, output_dir, output_filename=None, rgb_threshold=250, compare_sign=">"):
+	'''
+	Load a png or jpeg image given it's filepath and convert background pixels
+	(threshold based, white-ish pixels by default) into transparent pixels.
+	params
+		+
+	returns
+		+
+ 	'''
 
 	# load image
 	img = Image.open(img_filepath)
